@@ -1,22 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kenjil 3D Gallery</title>
-  <style>
-    body { background: #111; color: #eee; text-align: center; font-family: sans-serif; }
-    iframe { width: 90%; height: 500px; border: none; margin-top: 20px; border-radius: 10px; }
-  </style>
-</head>
-<body>
-  <h1>Kenjil 3D Artworks</h1>
-  <p>Explore my 3D creations</p>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenjil 3D Gallery</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #0a0a0a;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+  }
 
-  <!-- Embed Sketchfab model -->
-  <iframe title="3D Model"
-    src="https://sketchfab.com/models/xxxxxxxx/embed"
-    allow="autoplay; fullscreen; vr">
-  </iframe>
+  /* Parallax container */
+  .parallax-container {
+    position: relative;
+    height: 300vh; /* đủ để cuộn */
+    perspective: 1px;
+    transform-style: preserve-3d;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Background layer */
+  .layer-bg {
+    background: linear-gradient(120deg, #050505, #111122);
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(-2px) scale(3);
+    z-index: 1;
+  }
+
+  /* Floating color blocks (artworks) */
+  .layer {
+    position: absolute;
+    width: 250px;
+    height: 180px;
+    border-radius: 20px;
+    opacity: 0.85;
+    transition: transform 0.3s ease;
+  }
+
+  /* giả lập các artwork bằng màu */
+  .red { background: #ff4444; top: 20vh; left: 10vw; }
+  .blue { background: #448aff; top: 50vh; left: 60vw; }
+  .green { background: #00e676; top: 100vh; left: 30vw; }
+  .purple { background: #aa00ff; top: 150vh; left: 70vw; }
+  .orange { background: #ff9100; top: 200vh; left: 20vw; }
+
+  /* Logo/title */
+  header {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 2em;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+
+  header p {
+    color: #bbb;
+    margin: 5px 0 0;
+  }
+
+  /* Layer hover effect */
+  .layer:hover {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+</style>
+</head>
+
+<body>
+  <div class="parallax-container">
+    <div class="layer-bg"></div>
+
+    <header>
+      <h1>Kenjil Gallery</h1>
+      <p>Experimental Artworks & Motion Worlds</p>
+    </header>
+
+    <!-- Các khối màu đại diện artwork -->
+    <div class="layer red" data-depth="0.2"></div>
+    <div class="layer blue" data-depth="0.5"></div>
+    <div class="layer green" data-depth="0.3"></div>
+    <div class="layer purple" data-depth="0.4"></div>
+    <div class="layer orange" data-depth="0.6"></div>
+  </div>
+
+  <script>
+    // Parallax scroll hiệu ứng cuốn nhẹ
+    const layers = document.querySelectorAll('.layer');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      layers.forEach(layer => {
+        const depth = layer.getAttribute('data-depth');
+        const movement = scrollY * depth;
+        layer.style.transform = `translateY(${movement}px)`;
+      });
+    });
+  </script>
 </body>
 </html>
