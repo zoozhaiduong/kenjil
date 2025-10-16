@@ -3,77 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kenjil Scroll Animation</title>
+  <title>Kenjil 3D Showreel</title>
   <style>
-    html, body {
-      height: 100%;
+    body {
       margin: 0;
-      background-color: #000;
+      background-color: #f9f9f9;
+      font-family: "Poppins", sans-serif;
+      color: #222;
       overflow-x: hidden;
     }
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+
+    header {
+      text-align: center;
+      padding: 100px 20px 50px;
     }
-    section {
-      height: 300vh; /* Độ dài cuộn */
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+      padding: 50px 0;
+    }
+
+    .gallery img, .gallery video {
+      width: 80%;
+      max-width: 1000px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .gallery img.visible, .gallery video.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px;
+      color: #777;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <canvas id="animation"></canvas>
-  <section></section>
+  <header>
+    <h1>Kenjil 3D</h1>
+    <p>3D Concept • Lookdev • Rendering • Visual Design</p>
+  </header>
 
-  <script src="gsap/gsap.min.js"></script>
-  <script src="gsap/ScrollTrigger.min.js"></script>
+  <section class="gallery">
+    <!-- Thay link ảnh của bạn vào đây -->
+    <img src="images/artwork_01.jpg" alt="Artwork 1">
+    <img src="images/artwork_02.jpg" alt="Artwork 2">
+    <img src="images/artwork_03.jpg" alt="Artwork 3">
+    <!-- thêm bao nhiêu tùy bạn -->
+  </section>
+
+  <footer>
+    © 2025 Kenjil — Creative 3D Designer
+  </footer>
 
   <script>
-    gsap.registerPlugin(ScrollTrigger);
+    const items = document.querySelectorAll('.gallery img, .gallery video');
 
-    const canvas = document.getElementById("animation");
-    const context = canvas.getContext("2d");
-
-    canvas.width = 1920;
-    canvas.height = 1080;
-
-    const frameCount = 197; // vì bạn có từ 0 → 196
-    const currentFrame = i => `frames/Comp_${String(i).padStart(4, '0')}.jpg`;
-
-    const images = [];
-    const imageSeq = { frame: 0 };
-
-    // preload ảnh
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      images.push(img);
+    function revealOnScroll() {
+      const trigger = window.innerHeight * 0.9;
+      items.forEach(item => {
+        const top = item.getBoundingClientRect().top;
+        if (top < trigger) {
+          item.classList.add('visible');
+        }
+      });
     }
 
-    // hiệu ứng cuộn
-    gsap.to(imageSeq, {
-      frame: frameCount - 1,
-      snap: "frame",
-      ease: "none",
-      scrollTrigger: {
-        scrub: 0.2,
-        trigger: "canvas",
-        start: "top top",
-        end: "300% bottom"
-      },
-      onUpdate: render
-    });
-
-    images[0].onload = render;
-
-    function render() {
-      const img = images[imageSeq.frame];
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.drawImage(img, 0, 0, canvas.width, canvas.height);
-    }
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
   </script>
 </body>
 </html>
