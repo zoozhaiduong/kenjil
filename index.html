@@ -1,105 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kenjil 3D Showreel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenjil 3D — Showreel</title>
   <style>
-    body {
+    * {
       margin: 0;
-      background-color: #ccc3be;
-      font-family: "Poppins", sans-serif;
-      color: #222;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f7f7f7;
+      color: #111;
       overflow-x: hidden;
     }
 
-    header {
-      text-align: center;
-      padding: 100px 20px 50px;
+    /* --- POPUP INTRO STYLE --- */
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 1;
+      transition: opacity 0.4s ease;
     }
 
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
+    .popup.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .popup-content {
+      position: relative;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 800px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      animation: pop 0.5s ease;
+    }
+
+    .popup-content img {
+      width: 100%;
+      display: block;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 30px;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* --- MAIN LAYOUT --- */
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      padding: 60px 10%;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .section:nth-child(even) {
+      flex-direction: row-reverse;
+      background-color: #fafafa;
+    }
+
+    .image-box {
+      flex: 1 1 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .image-box img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      object-fit: cover;
+    }
+
+    .text-box {
+      flex: 1 1 40%;
+      padding: 40px;
+    }
+
+    .text-box h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
       letter-spacing: 1px;
     }
 
-    header p {
-      font-size: 1.1rem;
-      color: #555;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-
-    .gallery {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 50px;
-      padding: 50px 0;
-    }
-
-    .gallery img, .gallery video {
-      width: 80%;
-      max-width: 1000px;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 1.2s ease, transform 1.2s ease;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
-    .gallery img.visible, .gallery video.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .text-box p {
+      line-height: 1.6;
+      font-size: 1em;
+      color: #333;
     }
 
     footer {
       text-align: center;
-      padding: 50px;
-      color: #777;
-      font-size: 0.9rem;
+      padding: 40px 0;
+      font-size: 0.9em;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Kenjil 3D</h1>
-    <p>3D Concept • Lookdev • Rendering • Visual Design</p>
-  </header>
 
-  <section class="gallery">
-    <!-- Thay link ảnh của bạn vào đây -->
-    <img src="frames/Comp_00000.jpg" alt="Artwork 1">
-    <img src="frames/Comp_00001.jpg" alt="Artwork 2">
-    <img src="frames/Comp_00002.jpg" alt="Artwork 3">
-    <img src="frames/Comp_00002.jpg" alt="Artwork 3">
-    <img src="frames/Comp_00002.jpg" alt="Artwork 3">
-    <img src="frames/Comp_00002.jpg" alt="Artwork 3">
-    <img src="frames/Comp_00002.jpg" alt="Artwork 3">
-    <!-- thêm bao nhiêu tùy bạn -->
-  </section>
+  <!-- POPUP INTRO -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <button class="close-btn" id="closePopup">×</button>
+      <img src="frames/Comp_00000.jpg" alt="Intro Image">
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="section">
+    <div class="image-box">
+      <img src="frames/Comp_00001.jpg" alt="Artwork 1">
+    </div>
+    <div class="text-box">
+      <h2>Rain Over Neon Skies</h2>
+      <p>
+        In a city where memories breathe in circuits,  
+        I watched the lights fall into puddles,  
+        and every reflection whispered,  
+        “You were once here — glowing.”  
+      </p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="image-box">
+      <img src="frames/Comp_00002.jpg" alt="Artwork 2">
+    </div>
+    <div class="text-box">
+      <h2>Echoes Beneath Concrete</h2>
+      <p>
+        Somewhere between silence and reverb,  
+        I left a piece of my sound.  
+        Maybe the wind still carries it —  
+        through alleys that never forget.  
+      </p>
+    </div>
+  </div>
 
   <footer>
-    © 2025 Kenjil — Creative 3D Designer — zoozhaiduong@gmail.com
+    © 2025 Kenjil 3D — All visual works & concepts are original creations.
   </footer>
 
   <script>
-    const items = document.querySelectorAll('.gallery img, .gallery video');
+    const popup = document.getElementById('popup');
+    const closeBtn = document.getElementById('closePopup');
 
-    function revealOnScroll() {
-      const trigger = window.innerHeight * 0.9;
-      items.forEach(item => {
-        const top = item.getBoundingClientRect().top;
-        if (top < trigger) {
-          item.classList.add('visible');
-        }
-      });
-    }
+    closeBtn.addEventListener('click', () => {
+      popup.classList.add('hidden');
+      localStorage.setItem('kenjil_popup_seen', 'true');
+    });
 
-    window.addEventListener('scroll', revealOnScroll);
-    window.addEventListener('load', revealOnScroll);
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('kenjil_popup_seen')) {
+        popup.classList.add('hidden');
+      }
+    });
   </script>
+
 </body>
 </html>
