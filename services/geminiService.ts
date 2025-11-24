@@ -1,40 +1,7 @@
-import { GoogleGenAI } from "@google/genai";
 
-// Safe way to get API Key if injected by build tools, otherwise undefined.
-// This prevents "ReferenceError: process is not defined" in browser environments (GitHub Pages, etc.)
-const getApiKey = (): string | undefined => {
-  try {
-    // @ts-ignore
-    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-      // @ts-ignore
-      return process.env.API_KEY;
-    }
-  } catch (e) {
-    return undefined;
-  }
-  return undefined;
-};
-
-const API_KEY = getApiKey();
-let ai: GoogleGenAI | null = null;
-
-// Only initialize Gemini if a key is securely present
-if (API_KEY) {
-  try {
-    ai = new GoogleGenAI({ apiKey: API_KEY });
-  } catch (error) {
-    console.warn("Gemini API initialization failed, switching to offline mode.");
-  }
-}
-
-const KENJIL_SYSTEM_PROMPT = `
-You are the AI Assistant for "Kenjil", a professional 3D Artist and Motion Designer.
-Your goal is to impress potential clients and partners who visit this portfolio website.
-Keep responses short, professional, and artistic.
-`;
-
-// --- OFFLINE / FALLBACK LOGIC ---
-// This ensures the site works perfectly on GitHub Pages without any backend.
+// --- OFFLINE MODE SERVICE ---
+// No external APIs, no process.env, no crashes.
+// This runs 100% in the browser.
 
 interface FallbackRule {
   keywords: string[];
@@ -43,8 +10,8 @@ interface FallbackRule {
 
 const FALLBACK_RESPONSES: FallbackRule[] = [
   {
-    keywords: ['hi', 'hello', 'hey', 'chào', 'xin chào', 'start'],
-    text: "Greetings. I am Kenjil's automated assistant. Feel free to ask about my work, software stack, or how to get in touch."
+    keywords: ['hi', 'hello', 'hey', 'chào', 'xin chào', 'start', 'bắt đầu'],
+    text: "Hello! I am Kenjil's automated portfolio assistant. I'm currently running in offline mode. How can I help you?"
   },
   {
     keywords: ['contact', 'email', 'hire', 'reach', 'liên hệ', 'thuê', 'mail', 'booking', 'book'],
@@ -83,37 +50,17 @@ const getFallbackResponse = (message: string): string => {
   if (match) return match.text;
   
   // Default catch-all response
-  return "I am currently operating in offline mode. Please contact me at kenjil.art@email.com for specific inquiries, or ask about my software stack and experience.";
+  return "Thanks for your message. Since I am an automated responder, I didn't quite catch that. Please ask about my 'Services', 'Software', or 'Contact' info.";
 };
 
+// Simplified function signature compatible with the UI
 export const sendMessageToGemini = async (
   message: string,
-  history: { role: string; parts: { text: string }[] }[]
+  history: any[] 
 ): Promise<string> => {
-  // Simulate a small "thinking" delay for realism
-  await new Promise(resolve => setTimeout(resolve, 600 + Math.random() * 800));
+  // Simulate a small "typing" delay for better UX
+  await new Promise(resolve => setTimeout(resolve, 800));
 
-  // 1. If no AI instance (Offline / GitHub Pages mode), use fallback
-  if (!ai) {
-    return getFallbackResponse(message);
-  }
-
-  // 2. Try using Gemini API
-  try {
-    const model = "gemini-2.5-flash";
-    const chat = ai.chats.create({
-      model: model,
-      config: {
-        systemInstruction: KENJIL_SYSTEM_PROMPT,
-        temperature: 0.7,
-      },
-      history: history,
-    });
-
-    const result = await chat.sendMessage({ message });
-    return result.text || getFallbackResponse(message);
-  } catch (error) {
-    console.warn("Gemini API error, using fallback.", error);
-    return getFallbackResponse(message);
-  }
+  // Purely offline logic
+  return getFallbackResponse(message);
 };
