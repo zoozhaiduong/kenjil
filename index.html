@@ -1,195 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kenjil 3D — Showreel</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f7f7f7;
-      color: #111;
-      overflow-x: hidden;
-    }
-
-    /* --- POPUP INTRO STYLE --- */
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-
-    .popup.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .popup-content {
-      position: relative;
-      background: #000;
-      border-radius: 12px;
-      overflow: hidden;
-      max-width: 800px;
-      width: 90%;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-      animation: pop 0.5s ease;
-    }
-
-    .popup-content img {
-      width: 100%;
-      display: block;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 30px;
-    }
-
-    @keyframes pop {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    /* --- MAIN LAYOUT --- */
-    .section {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 100vh;
-      padding: 60px 10%;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .section:nth-child(even) {
-      flex-direction: row-reverse;
-      background-color: #fafafa;
-    }
-
-    .image-box {
-      flex: 1 1 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .image-box img {
-      width: 100%;
-      max-width: 600px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      object-fit: cover;
-    }
-
-    .text-box {
-      flex: 1 1 40%;
-      padding: 40px;
-    }
-
-    .text-box h2 {
-      font-size: 2em;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
-
-    .text-box p {
-      line-height: 1.6;
-      font-size: 1em;
-      color: #333;
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px 0;
-      font-size: 0.9em;
-      color: #888;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- POPUP INTRO -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <button class="close-btn" id="closePopup">×</button>
-      <img src="frames/Comp_00000.jpg" alt="Intro Image">
-    </div>
-  </div>
-
-  <!-- MAIN CONTENT -->
-  <div class="section">
-    <div class="image-box">
-      <img src="frames/Comp_00001.jpg" alt="Artwork 1">
-    </div>
-    <div class="text-box">
-      <h2>Rain Over Neon Skies</h2>
-      <p>
-        In a city where memories breathe in circuits,  
-        I watched the lights fall into puddles,  
-        and every reflection whispered,  
-        “You were once here — glowing.”  
-      </p>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="image-box">
-      <img src="frames/Comp_00002.jpg" alt="Artwork 2">
-    </div>
-    <div class="text-box">
-      <h2>Echoes Beneath Concrete</h2>
-      <p>
-        Somewhere between silence and reverb,  
-        I left a piece of my sound.  
-        Maybe the wind still carries it —  
-        through alleys that never forget.  
-      </p>
-    </div>
-  </div>
-
-  <footer>
-    © 2025 Kenjil 3D — All visual works & concepts are original creations.
-  </footer>
-
-  <script>
-    const popup = document.getElementById('popup');
-    const closeBtn = document.getElementById('closePopup');
-
-    closeBtn.addEventListener('click', () => {
-      popup.classList.add('hidden');
-      localStorage.setItem('kenjil_popup_seen', 'true');
-    });
-
-    window.addEventListener('load', () => {
-      if (localStorage.getItem('kenjil_popup_seen')) {
-        popup.classList.add('hidden');
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KENJIL | 3D Artist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+      
+      body {
+        background-color: #09090b; /* Zinc 950 */
+        color: #e4e4e7; /* Zinc 200 */
+        font-family: 'Inter', sans-serif;
       }
-    });
-  </script>
 
+      h1, h2, h3, .font-display {
+        font-family: 'Syncopate', sans-serif;
+      }
+
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      /* Custom cursor effect */
+      .cursor-glow {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
+        position: fixed;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        border-radius: 50%;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
